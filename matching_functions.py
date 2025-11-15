@@ -148,7 +148,8 @@ def compute_hybrid(X, Y, p, k):
 
     return matched, cost
   
-  
+
+@jit
 def compute_swap_best(X, Y, p, initial_matching):
     """Iteratively perform greedy swaps until no swap improves total cost"""
     history = [initial_matching]
