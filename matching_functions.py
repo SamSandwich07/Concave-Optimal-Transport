@@ -99,7 +99,7 @@ def compute_greedy(X, Y, p=0.5):
 
 @jit
 def compute_hybrid(X, Y, p, k):
-    """Apply k greedy matchings globally, then algo2 to residual"""
+    """Apply k greedy matchings globally, then Dyck to residual"""
     n = len(X)
     cost = 0
     matched = []
