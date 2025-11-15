@@ -1,6 +1,7 @@
 from scipy.optimize import linear_sum_assignment
 import numpy as np
 import heapq
+from numba import jit
 
 def generate_random_points(n):
     """Generate n random sorted points on [0,1] for each set"""
@@ -26,7 +27,8 @@ def compute_optimal(X, Y, p):
     row_ind, col_ind = linear_sum_assignment(C)
     return list(zip(row_ind, col_ind)), C[row_ind, col_ind].sum()
   
-  
+
+@jit
 def compute_dyck(X, Y, p=0.5):
     """Compute Dyck matching using level set algorithm"""
     n = len(X)
@@ -66,8 +68,9 @@ def compute_dyck(X, Y, p=0.5):
             blue_index += 1
 
     return matching, cost
-  
 
+
+@jit
 def compute_greedy(X, Y, p=0.5):
     """Compute greedy matching by using a heap to select next closest available pair"""
     matching = []
@@ -92,8 +95,9 @@ def compute_greedy(X, Y, p=0.5):
         cost += dist**p
 
     return matching, cost
-  
 
+
+@jit
 def compute_hybrid(X, Y, p, k):
     """Apply k greedy matchings globally, then algo2 to residual"""
     n = len(X)
@@ -182,7 +186,9 @@ def compute_swap_best(X, Y, p, initial_matching):
         history.append(list(current_matching.items()))
 
     return list(current_matching.items()), num_swaps, history
-  
+
+
+@jit
 def compute_hybrid_costs_for_all_k(X, Y, p):
     """
     Return the costs of matchings given by hybrid-k for all k from 0 to n
